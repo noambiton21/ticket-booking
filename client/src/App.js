@@ -1,12 +1,10 @@
-import logo from './logo.svg';
-import './App.css';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import "./App.css";
+import Login from "./auth/components/login";
 
 function App() {
   return (
     <div className="App">
-      
+      <Login />
     </div>
   );
 }
