@@ -2,23 +2,18 @@ import React from "react";
 import "./App.css";
 
 import MainNevigation from "./shared/components/Navigation/MainNevigation";
-import main from "./img/main.jpg";
+
+import airplane from "./img/airplane.jpg";
 import SearchFlightCard from "./shared/components/Cards/SearchFlightCard";
 
 function App() {
   return (
     <div className="App">
       <MainNevigation />
-      <div
-        style={{
-          backgroundImage: `url(${main})`,
-          height: "100vh",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-        }}
-      >
-        <SearchFlightCard />
-      </div>
+      <h1>Find And Book Your Flight</h1>
+      <img src={airplane}></img>
+      <SearchFlightCard />
+      <h6>NY-TRAVEL SUPPORT</h6>
     </div>
   );
 }
