@@ -9,10 +9,14 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
+import { Stack, Autocomplete } from "@mui/material";
+
+const skills = ["html", "css"];
 
 const SearchFlightCard = () => {
   const [departureDate, setDepartureDate] = useState(dayjs());
   const [returnDate, setReturnDate] = useState(dayjs());
+  const [value, setValue] = useState(null);
 
   const handleChangeDepartureDate = (newValue) => {
     setDepartureDate(newValue);
@@ -37,23 +41,37 @@ const SearchFlightCard = () => {
           flexWrap: "wrap",
         }}
       >
-        <Box sx={{ display: "flex", alightItems: "center", ml: 2 }}>
+        <Box sx={{ display: "flex", alightItems: "center", ml: 2, mr: 1 }}>
           <FlightTakeoffIcon sx={{ m: "auto" }} />
-          <TextField
-            id="outlined-basic"
-            label="Origin"
-            variant="outlined"
-            sx={{ m: 1, width: 200 }}
-          />
+          <Stack spacing={2} width="200px">
+            <Autocomplete
+              options={skills}
+              renderInput={(params) => (
+                <TextField
+                  sx={{ m: 1, width: 200 }}
+                  {...params}
+                  label="Origin"
+                />
+              )}
+              value={value}
+            />
+          </Stack>
         </Box>
-        <Box sx={{ display: "flex", alightItems: "center", ml: 1 }}>
+        <Box sx={{ display: "flex", alightItems: "center", ml: 1, mr: 1 }}>
           <FlightLandIcon sx={{ m: "auto" }} />
-          <TextField
-            id="outlined-basic"
-            label="Destination"
-            variant="outlined"
-            sx={{ m: 1, width: 200 }}
-          />
+          <Stack spacing={2} width="200px">
+            <Autocomplete
+              options={skills}
+              renderInput={(params) => (
+                <TextField
+                  sx={{ m: 1, width: 200 }}
+                  {...params}
+                  label="Destination"
+                />
+              )}
+              value={value}
+            />
+          </Stack>
         </Box>
 
         <LocalizationProvider dateAdapter={AdapterDayjs}>
