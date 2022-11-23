@@ -10,6 +10,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import FlightLandIcon from "@mui/icons-material/FlightLand";
 import { Stack, Autocomplete } from "@mui/material";
+import AddPassengerDialog from "../Dialogs/AddPassengerDialog";
 
 const skills = ["html", "css"];
 
@@ -17,6 +18,18 @@ const SearchFlightCard = () => {
   const [departureDate, setDepartureDate] = useState(dayjs());
   const [returnDate, setReturnDate] = useState(dayjs());
   const [value, setValue] = useState(null);
+
+  const [open, setOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("");
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (value) => {
+    setOpen(false);
+    setSelectedValue(value);
+  };
 
   const handleChangeDepartureDate = (newValue) => {
     setDepartureDate(newValue);
@@ -97,13 +110,23 @@ const SearchFlightCard = () => {
         </LocalizationProvider>
         <Box sx={{ display: "flex", alightItems: "center", ml: 2 }}>
           <PersonOutlineIcon sx={{ m: "auto" }} />
-          <TextField
-            sx={{ width: 200, m: 1 }}
-            id="outlined-name"
-            label="Passengers"
-            type="number"
-            value={"1"}
-          />
+
+          <div>
+            <TextField
+              sx={{ width: 200, m: 1 }}
+              id="outlined-name"
+              label="Passengers"
+              type="number"
+              onClick={handleClickOpen}
+              value={selectedValue}
+            />
+
+            <AddPassengerDialog
+              selectedValue={selectedValue}
+              open={open}
+              onClose={handleClose}
+            />
+          </div>
         </Box>
       </Box>
     </Card>
