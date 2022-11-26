@@ -1,17 +1,28 @@
+import {useState} from "react";
 import React from "react";
 import {Avatar, Button, Grid, Paper, TextField} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Register from "./Register"
 
-const login = () => {
+const paperStayle={padding:20, height:'50vh',width:280,margin:"20px auto"}
+const avatarStyle={backgroundColor:'#1442b3'}
+const textFieldEmailStyle = {margin:"5px auto"}
+const textFieldPaswordStyle = {margin:"20px auto"}
+const buttonSigInStyle = {margin:"30px auto"}
+const buttonSignUpStyle = {margin:"10px auto"}
 
-  const paperStayle={padding:20, height:'70vh',width:280,margin:"20px auto"}
-  const avatarStyle={backgroundColor:'#1442b3'}
-  const textFieldEmailStyle = {margin:"5px auto"}
-  const textFieldPaswordStyle = {margin:"20px auto"}
-  const buttonStyle = {margin:"170px auto"}
-  
 
-  return (
+const Login = () => {
+   
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  const isLoggedInHandler =()=>{
+    setIsLoggedIn(!isLoggedIn)
+  }
+
+let result
+if(!isLoggedIn){
+ result = 
       <Grid>
         <Paper elevation={10} style={paperStayle}>
           <Grid align = 'center'>
@@ -23,10 +34,16 @@ const login = () => {
           <h2>Sign in</h2>
           <TextField id="outlined-basic" label="Email" placeholder="Enter email" style={textFieldEmailStyle} fullWidth/>
           <TextField id="outlined-basic" label="Password" placeholder="Enter password" type = "password" style={textFieldPaswordStyle} fullWidth/>
-          <Button type ="sumbit" color="primary" variant="contained" style={buttonStyle} fullWidth>Sign in</Button>
+          <Button type ="sumbit" color="primary" variant="contained" style={buttonSigInStyle} fullWidth>Sign in</Button>
+          <Button onClick={isLoggedInHandler} color="primary"  style={buttonSignUpStyle} fullWidth>Create an account</Button>
         </Paper>
       </Grid>
+    return result
+}else
+{
+  return(
+    <Register switchToLogIn = {isLoggedInHandler}/>
   )
 }
-
-export default login
+};
+export default Login
