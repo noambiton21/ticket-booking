@@ -1,13 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import React, { useState } from "react";
+import "./App.css";
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from "react-router-dom";
+
+import MainNevigation from "./shared/components/Navigation/MainNevigation";
+import HomePage from "./flights/pages/HomePage";
 
 function App() {
+  const routes = (
+    <Switch>
+      <Route path="/" exact>
+        <HomePage />
+      </Route>
+      <Route path="/flights" exact>
+        <HomePage />
+      </Route>
+
+      <Redirect to="/" />
+    </Switch>
+  );
+
   return (
-    <div className="App">
-      
-    </div>
+    <Router>
+      <MainNevigation />
+      <main>{routes}</main>
+    </Router>
   );
 }
 
