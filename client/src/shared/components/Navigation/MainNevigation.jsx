@@ -1,16 +1,20 @@
 import React, { useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  Menu,
+  Container,
+  Avatar,
+  Button,
+  Tooltip,
+  MenuItem,
+} from "@mui/material";
+
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import LoginIcon from "@mui/icons-material/Login";
 
@@ -138,7 +142,7 @@ const MainNevigation = () => {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="Nemy Sharp" src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -165,8 +169,18 @@ const MainNevigation = () => {
               </Menu>
             </Box>
           ) : (
-            <Box sx={{ cursor: "pointer" }} onClick={handleLoggedIn}>
-              <LoginIcon sx={{ mr: 1 }} /> Login
+            <Box
+              sx={{
+                display: "flex",
+                alightItems: "center",
+                ml: 2,
+                mr: 1,
+                cursor: "pointer",
+              }}
+              onClick={handleLoggedIn}
+            >
+              <LoginIcon sx={{ mr: 1 }} />
+              <Typography textAlign="center">Login</Typography>
             </Box>
           )}
         </Toolbar>

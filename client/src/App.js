@@ -1,21 +1,34 @@
 import React, { useState } from "react";
 import "./App.css";
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  Switch,
+} from "react-router-dom";
 
 import MainNevigation from "./shared/components/Navigation/MainNevigation";
-
-import airplane from "./img/airplane.jpg";
-import SearchFlightCard from "./shared/components/Cards/SearchFlightCard";
+import HomePage from "./flights/pages/HomePage";
 
 function App() {
-  return (
-    <div className="App">
-      <MainNevigation />
+  const routes = (
+    <Switch>
+      <Route path="/" exact>
+        <HomePage />
+      </Route>
+      <Route path="/flights" exact>
+        <HomePage />
+      </Route>
 
-      <h1>Find And Book Your Flight</h1>
-      <img src={airplane}></img>
-      <SearchFlightCard />
-      <h6>NY-TRAVEL SUPPORT</h6>
-    </div>
+      <Redirect to="/" />
+    </Switch>
+  );
+
+  return (
+    <Router>
+      <MainNevigation />
+      <main>{routes}</main>
+    </Router>
   );
 }
 
