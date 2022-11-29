@@ -14,14 +14,14 @@ const buttonSignUpStyle = {margin:"10px auto"}
 
 const Login = () => {
    
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoginMode, setIsLoginMode] = useState(false)
 
   const isLoggedInHandler =()=>{
-    setIsLoggedIn(!isLoggedIn)
+    setIsLoginMode(!isLoginMode)
   }
 
 let result
-if(!isLoggedIn){
+if(!isLoginMode){
  result = 
       <Grid>
         <Paper elevation={10} style={paperStayle}>
