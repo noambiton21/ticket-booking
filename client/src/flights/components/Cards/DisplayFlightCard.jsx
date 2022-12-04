@@ -122,7 +122,7 @@ const DisplayFlightCard = () => {
           </Box>
 
           <Box sx={{}}>
-            <Button size="small">More details</Button>
+            <Button size="small">Continue to select seats</Button>
           </Box>
 
           <Divider />
