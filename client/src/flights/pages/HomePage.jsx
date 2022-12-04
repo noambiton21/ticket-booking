@@ -21,6 +21,7 @@ const HomePage = () => {
         component="img"
         sx={{
           display: isMobileView ? "none" : "",
+          width: "50%",
         }}
         alt="Airplane img"
         src={airplane}

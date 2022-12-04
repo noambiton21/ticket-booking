@@ -17,6 +17,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import LoginIcon from "@mui/icons-material/Login";
+import LoginDialog from "../../../User/components/Dialogs/LoginDialog";
 
 const pages = ["All Flights"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -25,6 +26,15 @@ const MainNevigation = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [openLoginDialog, setOpenLoginDialog] = useState(false);
+
+  const handleClickOpenLoginDialog = () => {
+    setOpenLoginDialog(true);
+  };
+
+  const handleCloseLoginDialog = () => {
+    setOpenLoginDialog(false);
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -169,18 +179,24 @@ const MainNevigation = () => {
               </Menu>
             </Box>
           ) : (
-            <Box
-              sx={{
-                display: "flex",
-                alightItems: "center",
-                ml: 2,
-                mr: 1,
-                cursor: "pointer",
-              }}
-              onClick={handleLoggedIn}
-            >
-              <LoginIcon sx={{ mr: 1 }} />
-              <Typography textAlign="center">Login</Typography>
+            <Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  alightItems: "center",
+                  ml: 2,
+                  mr: 1,
+                  cursor: "pointer",
+                }}
+                onClick={handleClickOpenLoginDialog}
+              >
+                <LoginIcon sx={{ mr: 1 }} />
+                <Typography textAlign="center">Login</Typography>
+              </Box>
+              <LoginDialog
+                open={openLoginDialog}
+                onClose={handleCloseLoginDialog}
+              />
             </Box>
           )}
         </Toolbar>
