@@ -18,7 +18,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import LoginIcon from "@mui/icons-material/Login";
 
-const pages = ["Products", "Pricing", "Blog"];
+const pages = ["All Flights"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const MainNevigation = () => {

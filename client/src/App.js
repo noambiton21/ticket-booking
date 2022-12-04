@@ -9,6 +9,7 @@ import {
 
 import MainNevigation from "./shared/components/Navigation/MainNevigation";
 import HomePage from "./flights/pages/HomePage";
+import FilteredFlights from "./flights/pages/FilteredFlights";
 
 function App() {
   const routes = (
@@ -17,7 +18,7 @@ function App() {
         <HomePage />
       </Route>
       <Route path="/flights" exact>
-        <HomePage />
+        <FilteredFlights />
       </Route>
 
       <Redirect to="/" />
