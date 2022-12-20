@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, Typography, Divider } from "@mui/material";
+import { Link } from "react-router-dom";
+import Seats from "../seats/Seats";
 
 const flightsDetails = [
   {
@@ -12,6 +14,17 @@ const flightsDetails = [
     landingTime: "19:00",
     landingDate: "June 17",
     price: 100,
+    rows: 6,
+    cols: 6,
+    seats: {
+      A: [0, 0, 0, 0, 0, 0],
+      B: [0, 0, 0, 0, 0, 0],
+      C: [0, 0, 0, 0, 0, 0],
+      D: [0, 0, 0, 0, 0, 0],
+      E: [0, 0, 0, 0, 0, 0],
+      F: [0, 0, 0, 0, 0, 0],
+      G: [0, 0, 0, 0, 0, 0],
+    },
   },
   {
     id: "2",
@@ -23,6 +36,17 @@ const flightsDetails = [
     landingTime: "19:00",
     landingDate: "June 17",
     price: 100,
+    rows: 6,
+    cols: 6,
+    seats: {
+      A: [0, 0, 0, 0, 0, 0],
+      B: [0, 0, 0, 0, 0, 0],
+      C: [0, 0, 0, 0, 0, 0],
+      D: [0, 0, 0, 0, 0, 0],
+      E: [0, 0, 0, 0, 0, 0],
+      F: [0, 0, 0, 0, 0, 0],
+      G: [0, 0, 0, 0, 0, 0],
+    },
   },
 ];
 
@@ -65,6 +89,12 @@ const airlines = {
 };
 
 const DisplayFlightCard = () => {
+  const [buttonSeats, setButtonSeats] = useState(false);
+
+  const btnHandler = () => {
+    setButtonSeats(true);
+  };
+
   return (
     <Box>
       {flightsDetails.map((flight) => (
@@ -121,8 +151,23 @@ const DisplayFlightCard = () => {
             </Box>
           </Box>
 
-          <Box sx={{}}>
-            <Button size="small">Continue to select seats</Button>
+          <Box>
+            <Link
+              to={{
+                pathname: `/flights/${flight.id}`,
+              }}
+            >
+              <Button size="small">Continue to select seats</Button>
+            </Link>
+          </Box>
+          <Box>
+            <Link
+              to={{
+                pathname: `/flights/customize/${flight.id}`,
+              }}
+            >
+              <Button size="small">Customize seats flight</Button>
+            </Link>
           </Box>
 
           <Divider />

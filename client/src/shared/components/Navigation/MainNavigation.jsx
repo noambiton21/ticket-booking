@@ -13,16 +13,15 @@ import {
   Tooltip,
   MenuItem,
 } from "@mui/material";
-
 import MenuIcon from "@mui/icons-material/Menu";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import LoginIcon from "@mui/icons-material/Login";
 import LoginDialog from "../../../User/components/Dialogs/LoginDialog";
 
 const pages = ["All Flights"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Profile", "Logout"];
 
-const MainNevigation = () => {
+const MainNavigation = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -205,4 +204,4 @@ const MainNevigation = () => {
   );
 };
 
-export default MainNevigation;
+export default MainNavigation;
