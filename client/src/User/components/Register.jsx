@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Avatar,
   Box,
@@ -16,6 +16,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { register } from "../../services/user.service";
+import { AuthContext } from "../../shared/context/auth-context";
 
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
@@ -31,6 +32,7 @@ const textFieldStyle = { margin: "10px auto" };
 const buttonStyleRegister = { margin: "20px auto" };
 
 const Register = (props) => {
+  const auth = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -65,9 +67,20 @@ const Register = (props) => {
 
   const handleSubmitForm = (e) => {
     e.preventDefault();
-    register(email, password, firstName, lastName, dateOfBirth).then((user) => {
-      setUser(user);
-    });
+    register(email, password, firstName, lastName, dateOfBirth).then(
+      (responseData) => {
+        auth.login(
+          responseData.userId,
+          responseData.token,
+          responseData.firstName
+        );
+        setUser(responseData);
+        console.log(responseData);
+        if (responseData.token) {
+          props.closeDialog();
+        }
+      }
+    );
   };
 
   return (

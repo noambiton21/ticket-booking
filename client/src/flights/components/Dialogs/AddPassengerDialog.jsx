@@ -14,10 +14,13 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import PersonIcon from "@mui/icons-material/Person";
 
+import { useCartContext } from "../../../shared/context/cart-context";
+
 const AddPassengerDialog = (props) => {
   const { onClose, selectedValue, open } = props;
   const [adultCounter, setAdultCounter] = useState(0);
   const [babyCounter, setBabyCounter] = useState(0);
+  const { setCart, cart } = useCartContext();
 
   const handleChangeAdult = (value) => {
     if (value === "inc") {
@@ -40,10 +43,24 @@ const AddPassengerDialog = (props) => {
   };
 
   const handleClose = () => {
+    const passengers = {
+      adultCounter: adultCounter,
+      babyCounter: babyCounter,
+    };
+    const newCart = [...cart];
+    newCart[passengers] = passengers;
+    setCart(newCart);
     onClose(selectedValue);
   };
 
   const handleListItemClick = (value) => {
+    const passengers = {
+      adultCounter: adultCounter,
+      babyCounter: babyCounter,
+    };
+    const newCart = [...cart];
+    newCart[passengers] = passengers;
+    setCart(newCart);
     onClose(value);
   };
 

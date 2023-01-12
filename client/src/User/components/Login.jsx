@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import React from "react";
 import { Avatar, Button, Grid, Paper, TextField, Box } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Register from "./Register";
+import { login } from "../../services/user.service";
+import { AuthContext } from "../../shared/context/auth-context";
 
 const paperStyle = { padding: 20, margin: "auto" };
 const avatarStyle = { backgroundColor: "#1442b3" };
@@ -11,11 +13,38 @@ const textFieldPasswordStyle = { margin: "20px auto" };
 const buttonSigInStyle = { margin: "30px auto" };
 const buttonSignUpStyle = { margin: "10px auto" };
 
-const Login = () => {
+const Login = (props) => {
+  const auth = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(false);
+  const [user, setUser] = useState({});
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const isLoggedInHandler = () => {
     setIsLoginMode(!isLoginMode);
+  };
+
+  const handleChangeEmail = (newValue) => {
+    setEmail(newValue.target.value);
+  };
+  const handleChangePassword = (newValue) => {
+    setPassword(newValue.target.value);
+  };
+
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+    login(email, password).then((responseData) => {
+      auth.login(
+        responseData.userId,
+        responseData.token,
+        responseData.firstName
+      );
+      setUser(responseData);
+      console.log(responseData);
+      if (responseData.token) {
+        props.closeDialog();
+      }
+    });
   };
 
   let result;
@@ -36,6 +65,7 @@ const Login = () => {
               placeholder="Enter email"
               style={textFieldEmailStyle}
               fullWidth
+              onChange={handleChangeEmail}
             />
             <TextField
               id="outlined-basic"
@@ -44,12 +74,14 @@ const Login = () => {
               type="password"
               style={textFieldPasswordStyle}
               fullWidth
+              onChange={handleChangePassword}
             />
             <Button
               color="primary"
               variant="contained"
               style={buttonSigInStyle}
               fullWidth
+              onClick={handleSubmitForm}
             >
               Sign in
             </Button>
@@ -67,7 +99,12 @@ const Login = () => {
     );
     return result;
   } else {
-    return <Register switchToLogIn={isLoggedInHandler} />;
+    return (
+      <Register
+        switchToLogIn={isLoggedInHandler}
+        closeDialog={props.closeDialog}
+      />
+    );
   }
 };
 export default Login;

@@ -11,7 +11,7 @@ const LoginDialog = (props) => {
 
   return (
     <Dialog onClose={handleClose} open={open}>
-      <Login />
+      <Login closeDialog={handleClose} />
     </Dialog>
   );
 };

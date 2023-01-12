@@ -82,7 +82,7 @@ const signup = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: createdUser.id, email: createdUser.email },
-      process.env.jwt_secret,
+      "nySecret",
       { expiresIn: "10h" }
     );
   } catch (err) {
@@ -97,6 +97,7 @@ const signup = async (req, res, next) => {
     userId: createdUser.id,
     email: createdUser.email,
     token: token,
+    firstName: createdUser.firstName,
   });
 };
 
@@ -147,7 +148,7 @@ const login = async (req, res, next) => {
   try {
     token = jwt.sign(
       { userId: existingUser.id, email: existingUser.email },
-      process.env.jwt_secret,
+      "nySecret",
       { expiresIn: "10h" }
     );
   } catch (err) {
@@ -162,6 +163,7 @@ const login = async (req, res, next) => {
     userId: existingUser.id,
     email: existingUser.email,
     token: token,
+    firstName: existingUser.firstName,
   });
 };
 

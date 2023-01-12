@@ -3,24 +3,21 @@ import { useState, useEffect, useContext } from "react";
 import { Button } from "@mui/material";
 import styles from "./Seats.module.scss";
 import { useFlightsContext } from "../../../shared/context/flights-context";
+import { AuthContext } from "../../../shared/context/auth-context";
 
 const Seats = () => {
+  const auth = useContext(AuthContext);
   const { flights } = useFlightsContext();
   const params = useParams();
   const flightId = params.id;
 
   let selectedSeats = [];
   // const { id, seats } = useParams();
-  const flight = flights.find((flight) => flight.id == parseInt(flightId));
+  const flight = flights.find((flight) => flight._id == flightId);
+
+  console.log(flight);
 
   const [seatDetails, setSeatDetails] = useState(flight?.seats || {});
-
-  // useEffect(() => {
-  //   if (!seats) {
-  //     clearSelectedSeats();
-  //   }
-  // }, []);
-  console.log(flights);
 
   const clearSelectedSeats = () => {
     let newFlightSeatDetails = { ...seatDetails };
@@ -111,7 +108,7 @@ const Seats = () => {
           to={{
             pathname: `/payment`,
             state: {
-              flightId: flight?.id,
+              flightId: flight?._id,
               seatDetails: JSON.stringify(seatDetails),
             },
           }}
@@ -135,11 +132,17 @@ const Seats = () => {
   if (!flight) return <div>loading...</div>;
   return (
     <>
-      <h3 className={styles.title}>CHOOSE YOUR SEATS</h3>
-      <div className={styles.seatsContainer}>
-        {seatDetails && <RenderSeats />}
-        <RenderPaymentButton />
-      </div>
+      {auth.isLoggedIn ? (
+        <>
+          <h3 className={styles.title}>CHOOSE YOUR SEATS</h3>
+          <div className={styles.seatsContainer}>
+            {seatDetails && <RenderSeats />}
+            <RenderPaymentButton />
+          </div>
+        </>
+      ) : (
+        <h3 className={styles.title}>YOU MUST LOG IN TO SELECT A SEAT!</h3>
+      )}
     </>
   );
 };

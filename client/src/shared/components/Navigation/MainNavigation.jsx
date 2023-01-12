@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 
 import {
   AppBar,
@@ -17,6 +17,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import FlightTakeoffIcon from "@mui/icons-material/FlightTakeoff";
 import LoginIcon from "@mui/icons-material/Login";
 import LoginDialog from "../../../User/components/Dialogs/LoginDialog";
+import { AuthContext } from "../../context/auth-context";
 
 const pages = ["All Flights"];
 const settings = ["Profile", "Logout"];
@@ -24,8 +25,8 @@ const settings = ["Profile", "Logout"];
 const MainNavigation = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [openLoginDialog, setOpenLoginDialog] = useState(false);
+  const auth = useContext(AuthContext);
 
   const handleClickOpenLoginDialog = () => {
     setOpenLoginDialog(true);
@@ -45,12 +46,10 @@ const MainNavigation = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  const handleLoggedIn = () => {
-    setIsLoggedIn(true);
-  };
+
   const handleCloseUserMenu = (event) => {
     if (event.target.innerText === "Logout") {
-      setIsLoggedIn(false);
+      auth.logout();
     }
     setAnchorElUser(null);
   };
@@ -147,11 +146,14 @@ const MainNavigation = () => {
               </Button>
             ))}
           </Box>
-          {isLoggedIn ? (
+          {auth.isLoggedIn ? (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Nemy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar
+                    alt={auth.userFirstName}
+                    src="/static/images/avatar/2.jpg"
+                  />
                 </IconButton>
               </Tooltip>
               <Menu

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
+import { useFlightsContext } from "../../../shared/context/flights-context";
 
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
@@ -28,19 +29,64 @@ import {
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-const skills = ["html", "css"];
-
 const SearchFlightCard = () => {
   const [departureDate, setDepartureDate] = useState(dayjs());
   const [returnDate, setReturnDate] = useState(dayjs());
   const [isOneWay, setIsOneWay] = useState(false);
-  const [value, setValue] = useState(null);
+  const { flights, setFilteredFlights, returnFlights, setReturnFlights } =
+    useFlightsContext();
+  const [selectedOrigin, setSelectedOrigin] = useState(null);
+  const [selectedDeparture, setSelectedDeparture] = useState(null);
+  const [listOriginCity, setListOriginCity] = useState([]);
+  const [listLandingCity, setListLandingCity] = useState([]);
 
   const [open, setOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
 
   const theme = useTheme();
   const isMobileView = useMediaQuery(theme.breakpoints.down("sm"));
+
+  function getValuesForKey(objects, key) {
+    const names = objects.map((object) => object[key]);
+    return [...new Set(names)];
+  }
+
+  useEffect(() => {
+    if (flights) {
+      setListOriginCity(getValuesForKey(flights, "originCity"));
+      setListLandingCity(getValuesForKey(flights, "landingCity"));
+    }
+  }, [flights]);
+
+  function filterFlights() {
+    const flightDate = new Date(departureDate).toLocaleDateString("en-GB");
+
+    const filteredFlights = flights.filter((flight) => {
+      return (
+        flight.originCity === selectedOrigin &&
+        flight.departureDate === flightDate &&
+        flight.landingCity === selectedDeparture
+      );
+    });
+    if (filteredFlights) {
+      setFilteredFlights(filteredFlights);
+    } else {
+      alert("there is no flights");
+    }
+    if (!isOneWay) {
+      const returnFlightDate = new Date(returnDate).toLocaleDateString("en-GB");
+      setReturnFlights(
+        flights.filter((flight) => {
+          return (
+            flight.originCity === selectedDeparture &&
+            flight.departureDate === returnFlightDate &&
+            flight.landingCity === selectedOrigin
+          );
+        })
+      );
+    }
+    console.log(filteredFlights);
+  }
 
   const handleChangeIsOneWay = (event) => {
     setIsOneWay(event.target.checked);
@@ -62,9 +108,6 @@ const SearchFlightCard = () => {
     setReturnDate(newValue);
   };
 
-  function valuetext(value) {
-    return `${value} Stops`;
-  }
   return (
     <Card
       sx={{
@@ -87,27 +130,6 @@ const SearchFlightCard = () => {
       >
         <Box
           sx={{
-            width: 200,
-            position: "absolute",
-            top: "5px",
-            right: "10px",
-            mr: 2,
-          }}
-        >
-          <Typography gutterBottom>Stops</Typography>
-          <Slider
-            aria-label="Stops"
-            defaultValue={0}
-            getAriaValueText={valuetext}
-            valueLabelDisplay="auto"
-            step={1}
-            marks
-            min={0}
-            max={4}
-          />
-        </Box>
-        <Box
-          sx={{
             display: "flex",
             alightItems: "center",
             m: "auto",
@@ -119,11 +141,14 @@ const SearchFlightCard = () => {
           />
           <Stack spacing={2} width="200px">
             <Autocomplete
-              options={skills}
+              options={listOriginCity}
               renderInput={(params) => (
                 <TextField sx={{ width: 200 }} {...params} label="Origin" />
               )}
-              value={value}
+              value={selectedOrigin}
+              onChange={(event, newValue) => {
+                setSelectedOrigin(newValue);
+              }}
             />
           </Stack>
         </Box>
@@ -140,7 +165,7 @@ const SearchFlightCard = () => {
           />
           <Stack spacing={2} width="200px">
             <Autocomplete
-              options={skills}
+              options={listLandingCity}
               renderInput={(params) => (
                 <TextField
                   sx={{ width: 200 }}
@@ -148,7 +173,10 @@ const SearchFlightCard = () => {
                   label="Destination"
                 />
               )}
-              value={value}
+              value={selectedDeparture}
+              onChange={(event, newValue) => {
+                setSelectedDeparture(newValue);
+              }}
             />
           </Stack>
         </Box>
@@ -227,6 +255,7 @@ const SearchFlightCard = () => {
                 background: "#f84464",
                 marginLeft: "10px",
               }}
+              onClick={filterFlights}
             >
               FIND ME A FLIGHT
             </Button>

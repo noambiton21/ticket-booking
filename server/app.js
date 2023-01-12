@@ -60,10 +60,13 @@ app.use((req, res, next) => {
 //   });
 
 mongoose
-  .connect({
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    `mongodb+srv://nyflights:123321@cluster0.gqfeaue.mongodb.net/?retryWrites=true&w=majority`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => {
     app.listen(1337);
     console.log(`[server]: Server is running at https://localhost:${1337}`);

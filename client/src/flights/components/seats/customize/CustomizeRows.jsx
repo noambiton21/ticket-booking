@@ -3,14 +3,17 @@ import { Button, TextField } from "@mui/material";
 import { useHistory, useParams } from "react-router-dom";
 import styles from "./Customize.module.scss";
 import { useFlightsContext } from "../../../../shared/context/flights-context";
+import { updateSeatsFlight } from "../../../../services/flight.service";
+import { AuthContext } from "../../../../shared/context/auth-context";
 
 const CustomizeRows = () => {
+  const auth = useContext(AuthContext);
   const { flights, setFlights } = useFlightsContext();
   const history = useHistory();
   const params = useParams();
   const flightId = params.id;
 
-  const flight = flights.find((flight) => flight.id == parseInt(flightId));
+  const flight = flights.find((flight) => flight._id == flightId);
 
   const [seatDetails, setSeatDetails] = useState(flight?.seats || {});
   const [row, setRow] = useState(flight?.rows || 0);
@@ -25,7 +28,7 @@ const CustomizeRows = () => {
   }, [row, column]);
 
   const clearSelectedSeats = () => {
-    let newMovieSeatDetails = { ...seatDetails };
+    let newFlightSeatDetails = { ...seatDetails };
     for (let key in seatDetails) {
       seatDetails[key].forEach((seatValue, seatIndex) => {
         if (seatValue === 2) {
@@ -33,7 +36,7 @@ const CustomizeRows = () => {
         }
       });
     }
-    return newMovieSeatDetails;
+    return newFlightSeatDetails;
   };
 
   const handleSubmit = () => {
@@ -61,9 +64,12 @@ const CustomizeRows = () => {
   };
 
   const handleSaveSetup = async () => {
-    let movieIndex = flights.findIndex((mov) => mov.id == parseInt(flightId));
-    if (movieIndex !== -1 && setFlights) {
-      flights[movieIndex].seats = seatDetails;
+    let flightIndex = flights.findIndex((f) => f._id == flightId);
+    if (flightIndex !== -1 && setFlights) {
+      flights[flightIndex].seats = seatDetails;
+
+      updateSeatsFlight(flights[flightIndex].seats, flightId, auth.token);
+
       setFlights(flights);
       history.push("/flights");
     }

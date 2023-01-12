@@ -6,8 +6,11 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import styles from "./Payment.module.scss";
 import { useFlightsContext } from "../../../shared/context/flights-context";
+import { AuthContext } from "../../../shared/context/auth-context";
+import { updateSeatsFlight } from "../../../services/flight.service";
 
 const Tickets = () => {
+  const auth = useContext(AuthContext);
   const location = useLocation();
   const history = useHistory();
   const { flights, setFlights } = useFlightsContext();
@@ -21,7 +24,7 @@ const Tickets = () => {
   const { flightId, seatDetails } = location.state;
   console.log(flightId);
 
-  const flight = flights.find((flight) => flight.id == parseInt(flightId));
+  const flight = flights.find((flight) => flight._id == flightId);
   if (seatDetails) {
     flightSeatDetails = JSON.parse(seatDetails);
   }
@@ -91,12 +94,13 @@ const Tickets = () => {
   };
 
   const onConfirmButtonClick = async () => {
-    let flightIndex = flights.findIndex(
-      (flight) => flight.id == parseInt(flightId)
-    );
+    let flightIndex = flights.findIndex((flight) => flight._id == flightId);
     if (flightIndex != -1 && setFlights) {
       flights[flightIndex].seats = modifiedSeatValue();
       console.log(flights);
+
+      updateSeatsFlight(flights[flightIndex].seats, flightId, auth.token);
+
       setFlights(flights);
       history.push("/flights");
     }
